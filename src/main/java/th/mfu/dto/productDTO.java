@@ -1,12 +1,15 @@
-package th.mfu;
+package th.mfu.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
-public class product {
+public class productDTO {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -38,6 +41,7 @@ public class product {
     public void setPrice(double price) {
         this.price = price;
     }
+    
 
     
 

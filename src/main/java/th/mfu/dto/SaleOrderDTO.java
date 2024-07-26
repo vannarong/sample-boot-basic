@@ -1,4 +1,5 @@
-package th.mfu;
+package th.mfu.dto;
+
 
 import java.util.List;
 
@@ -13,8 +14,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import th.mfu.domain.Customer;
+import th.mfu.domain.product;
+
 @Entity
-public class SaleOrder {
+public class SaleOrderDTO {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -62,3 +66,4 @@ public class SaleOrder {
 
     
 }
+

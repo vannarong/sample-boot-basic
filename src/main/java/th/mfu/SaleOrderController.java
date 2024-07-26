@@ -1,7 +1,9 @@
 package th.mfu;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+
+import th.mfu.domain.Customer;
+import th.mfu.domain.SaleOrder;
+import th.mfu.dto.CustomerDTO;
+import th.mfu.dto.SaleOrderDTO;
+import th.mfu.dto.mapper.SaleOrderMapper;
+import th.mfu.repository.CustomerRepository;
+import th.mfu.repository.SaleOrderRepository;
+
 
 @RestController
 public class SaleOrderController {
@@ -25,6 +37,7 @@ public class SaleOrderController {
     public ResponseEntity<String> createOrder(@PathVariable Long customerId, @RequestBody SaleOrder saleOrder) {
         // check if customer exists
         if (!customerRepository.existsById(customerId)) {
+            
             return new ResponseEntity<String>("Customer not found", HttpStatus.NOT_FOUND);
         }
         Optional<Customer> optCustomer = customerRepository.findById(customerId);
@@ -34,12 +47,18 @@ public class SaleOrderController {
         return new ResponseEntity<String>("Order created", HttpStatus.CREATED);
     }
 
-    // get all order
-    @GetMapping("/orders")
-    public ResponseEntity<Collection<SaleOrder>> getAllOrders() {
-        return new ResponseEntity<Collection<SaleOrder>>(saleOrderRepository.findAll(), HttpStatus.OK);
+   
+    @GetMapping("/customers")
+    public ResponseEntity<Collection> getAllCustomers(){
+        List<SaleOrder> SaleOrder = saleOrderRepository.findAll();
+        List<SaleOrderDTO> dtos = new ArrayList<SaleOrderDTO>();
+        for(SaleOrder cust: SaleOrder){
+            SaleOrderDTO dto  = new SaleOrderDTO();
+            SaleOrderMapper.updateSaleOrderFromEntity(cust, dto);
+            dtos.add(dto);
+        }
+        return new ResponseEntity<Collection>(saleOrderRepository.findAll(), HttpStatus.OK);
     }
-
     // // GET for getting orders by customer
     // @GetMapping("/customers/{customerId}/orders")
     // public ResponseEntity<Collection<SaleOrder>> getOrdersByCustomer(@PathVariable Long customerId) {
